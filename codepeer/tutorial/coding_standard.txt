@@ -1,0 +1,139 @@
+-----------------------------------------------------
+-- This is a sample gnatcheck coding standard file --
+-----------------------------------------------------
+
+--  9.1.3.5. Predefined_Numeric_Types
+--  Flag each explicit use of the name of any numeric type or subtype declared in package Standard.
++R Predefined_Numeric_Types
+
+--  9.1.5.1. Anonymous_Arrays
+--  Flag all anonymous array type definitions (by Ada semantics these can only occur in object declarations).
++R Anonymous_Arrays
+
+--  9.1.5.7. Exceptions_As_Control_Flow
+--  Flag each place where an exception is explicitly raised and handled in the same subprogram body. A raise statement in an exception handler, package body, task body or entry body is not flagged.
++R Exceptions_As_Control_Flow
+
+--  9.1.5.8. Exits_From_Conditional_Loops
+--  Flag any exit statement if it transfers the control out of a for loop or a while loop. This includes cases when the exit statement applies to a FOR or while loop, and cases when it is enclosed in some for or while loop, but transfers the control from some outer (unconditional) loop statement.
++R Exits_From_Conditional_Loops
+
+--  9.1.5.9. EXIT_Statements_With_No_Loop_Name
+--  Flag each exit statement that does not specify the name of the loop being exited.
++R EXIT_Statements_With_No_Loop_Name
+
+--  9.1.5.11. GOTO_Statements
+--  Flag each occurrence of a goto statement.
++R GOTO_Statements
+
+--  9.1.5.16. Null_Paths
+--  Flag a statement sequence that is a component of an IF, CASE or LOOP statement if this sequences consists of NULL statements only.
++R Null_Paths
+
+--  9.1.5.17. Objects_Of_Anonymous_Types
+--  Flag any object declaration located immediately within a package declaration or a package body (including generic packages) if it uses anonymous access or array type definition. Record component definitions and parameter specifications are not flagged. Formal object declarations defined with anonymous access definitions are flagged.
++R Objects_Of_Anonymous_Types
+
+--  9.1.5.23. Positional_Actuals_For_Defaulted_Generic_Parameters
+--  Flag each generic actual parameter corresponding to a generic formal parameter with a default initialization, if positional notation is used.
++R Positional_Actuals_For_Defaulted_Generic_Parameters
+
+--  9.1.5.24. Positional_Actuals_For_Defaulted_Parameters
+--  Flag each actual parameter to a subprogram or entry call where the corresponding formal parameter has a default expression, if positional notation is used.
++R Positional_Actuals_For_Defaulted_Parameters
+
+--  9.1.5.25. Positional_Components
+--  Flag each array, record and extension aggregate that includes positional notation.
++R Positional_Components
+
+--  9.1.5.26. Positional_Generic_Parameters
+--  Flag each positional actual generic parameter except for the case when the generic unit being instantiated has exactly one generic formal parameter.
++R Positional_Generic_Parameters
+
+--  9.1.5.27. Positional_Parameters
+--  Flag each positional parameter notation in a subprogram or entry call
++R Positional_Parameters : All
+
+--  9.1.5.29. Unchecked_Address_Conversions
+--  Flag instantiations of Ada.Unchecked_Conversion if the actual for the formal type Source is the System.Address type (or a type derived from it), and the actual for the formal type Target is an access type (including types derived from access types). This include cases when the actual for Source is a private type and its full declaration is a type derived from System.Address, and cases when the actual for Target is a private type and its full declaration is an access type. The rule is checked inside expanded generics.
++R Unchecked_Address_Conversions
+
+--  9.1.5.31. Unconditional_Exits
+--  Flag unconditional exit statements.
++R Unconditional_Exits
+
+--  9.1.5.32. Uninitialized_Global_Variables
+--  Flag an object declaration located immediately within a package declaration, a generic package declaration or a package body, if it does not have an explicit initialization. Do not flag deferred constant declarations and declarations of objects of limited types.
++R Uninitialized_Global_Variables
+
+--  9.1.6.1. Identifier_Casing
+--  Flag each defining identifier that does not have a casing corresponding to the kind of entity being declared. All defining names are checked.
++R Identifier_Casing : Type=mixed, Enum=mixed, Constant=mixed, Exception=mixed, Others=mixed
+
+--  9.2.2. Anonymous_Subtypes
+--  Flag all uses of anonymous subtypes
++R Anonymous_Subtypes
+
+--  9.2.4. Complex_Inlined_Subprograms
+--  Flag a subprogram (or generic subprogram, or instantiation of a subprogram) if pragma Inline is applied to it
++R Complex_Inlined_Subprograms
+
+--  9.2.11. Explicit_Full_Discrete_Ranges
+--  Flag each discrete range that has the form A'First .. A'Last.
++R Explicit_Full_Discrete_Ranges
+
+--  9.2.13. Fixed_Equality_Checks
+--  Flag all calls to the predefined equality operations for fixed-point types. Both ‘=‘ and ‘/=‘ operations are checked. User-defined equality operations are not flagged, nor are uses of operators that are renamings of the predefined equality operations. Also, the ‘=‘ and ‘/=‘ operations for floating-point types are not flagged.
++R Fixed_Equality_Checks
+
+--  9.2.14. Float_Equality_Checks
+--  Flag all calls to the predefined equality operations for floating-point types. Both ‘=‘ and ‘/=‘ operations are checked. User-defined equality operations are not flagged, nor are uses of operators that are renamings of the predefined equality operations. Also, the ‘=‘ and ‘/=‘ operations for fixed-point types are not flagged.
++R Float_Equality_Checks
+
+--  9.2.31. Unassigned_OUT_Parameters
+--  Flag procedures’ out parameters that are not assigned.
++R Unassigned_OUT_Parameters
+
+--  9.3.2. Metrics_Cyclomatic_Complexity
+--  The Metrics_Cyclomatic_Complexity rule takes a positive integer as upper bound. A program unit that is an executable body exceeding this limit will be flagged.
++R Metrics_Cyclomatic_Complexity : 20
+
+--  9.3.3. Metrics_LSLOC
+--  The Metrics_LSLOC rule takes a positive integer as upper bound. A program unit declaration or a program unit body exceeding this limit will be flagged.
++R Metrics_LSLOC : 100
+
+--  Style check rules
++R Style_Checks : All_Checks
+ 
+--  Optional Warnings
++R Warnings : gnatwa
+
+--  Activate warnings on bad fixed values
++R Warnings : gnatwb
+
+--  Activate warnings on conditionals
++R Warnings : gnatwc
+
+--  Activate warnings on variables that could be constants
++R Warnings : gnatwk
+
+-- Actiavtee warnings on modified but unreferences variables
++R Warnings : gnatwm
+
+--  Activate warnings on parameter ordering
++R Warnings : gnatw.p
+
+-- Activate warnings on questionable missing parentheses
++R Warnings : gnatwq
+
+-- Activate warnings on redundant constructs
++R Warnings : gnatwr
+
+-- Activate warnings on suspicious contracts
++R Warnings : gnatw.t
+
+-- Activate warnings on unused entities
++R Warnings : gnatwu
+
+-- Activate warnings for size not a multiple of alignment
++R Warnings : gnatw.z

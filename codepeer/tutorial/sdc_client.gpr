@@ -1,0 +1,101 @@
+project Sdc is
+
+   for Languages use ("ada");
+   for Source_Dirs use ("common", "struct");
+   for Main use ("sdc.adb");
+
+   type Build_Type is
+      ("PRODUCTION", "DEBUG");
+   Build : Build_Type := external ("Build", "DEBUG");
+
+   type Report_Type is ("DEFAULT", "SECURITY", "CSV", "TEXT", "HTML");
+   Report : Report_Type := external ("Report", "DEFAULT");
+
+   for Object_Dir use "obj/" & Report;
+
+   type Language_Version is ("ADA95", "ADA2012");
+   Version : Language_Version := external ("Version", "ADA2012");
+
+   package Compiler is
+
+      Common_Switches := ("-gnatwe", "-gnaty");
+
+      case Version is
+         when "ADA95" =>
+            Common_Switches := Common_Switches & ("-gnat95");
+         when "ADA2012" =>
+            Common_Switches := Common_Switches & ("-gnat12");
+      end case;
+
+      case Build is
+
+         when "PRODUCTION" =>
+            for Switches ("ada") use Common_Switches & ("-O2", "-gnatn", "-gnatp");
+
+         when "DEBUG" =>
+            for Switches ("ada") use Common_Switches & ("-gnato", "-g");
+            for Switches ("screen_output.adb") use Common_Switches & ("-g");
+      end case;
+
+   end Compiler;
+
+   package Builder is
+
+      case Build is
+
+         when "PRODUCTION" =>
+            for Switches ("ada") use ();
+
+         when "DEBUG" =>
+            for Switches ("ada") use ("-g");
+      end case;
+   end Builder;
+
+   package Binder is
+      for Switches ("ada") use ("-static");
+   end Binder;
+
+   package Codepeer is
+      for Cwe use "true";
+
+      --      Common_Switches := ("--gnatcheck");
+      Common_Switches := ("-level", "3");
+      Report_Switches := ();
+
+      case Report is
+         when "DEFAULT" =>
+             Report_Switches := ();
+         when "SECURITY" =>
+            Report_Switches := ("--security-report");
+         when "CSV" =>
+            Report_Switches := ("-output-msg",
+                                "-csv",
+                                "-out",
+                                "messages.csv");
+         when "TEXT" =>
+            Report_Switches := ("-output-msg",
+                                "-out",
+                                "report_file.out",
+                                "-show-header",
+                                "-show-info",
+                                "-show-added",
+                          --      "-show-removed",
+                                "-show-reviews");
+         when "HTML" =>
+            Report_Switches := ("-html");
+      end case;
+
+      for Switches use Common_Switches & Report_Switches;
+
+      for Server_URL use "http://10.0.1.12";
+   end Codepeer;
+
+   package Check is
+      for Default_Switches ("ada") use ("-j0",
+                                        "-m0",
+                                        "-rules",
+                                        "-from=" & Project'Project_Dir & "/coding_standard.txt");
+   end Check;
+
+end Sdc;
+
